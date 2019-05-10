@@ -1,14 +1,14 @@
 <template>
 	<v-app>
-		<app-navigation></app-navigation>
+		<Navigation />
 
-		<app-toolbar></app-toolbar>
+		<Toolbar />
 
 		<v-content>
-			<app-carousel></app-carousel>
+			<Carousel />
 		</v-content>
 
-		<app-footer></app-footer>
+		<Footer />
 	</v-app>
 </template>
 
@@ -19,11 +19,6 @@ import Carousel from '@/components/widgets/Carousel.vue'
 import Footer from '@/components/template/Footer.vue'
 
 export default {
-	components: {
-		appFooter: Footer,
-		appCarousel: Carousel,
-		appToolbar: Toolbar,
-		appNavigation: Navigation
-	}
+	components: {Footer, Carousel, Toolbar, Navigation	}
 }
 </script>
