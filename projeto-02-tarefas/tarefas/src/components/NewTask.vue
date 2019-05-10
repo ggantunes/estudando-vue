@@ -1,9 +1,26 @@
 <template>
     <div class="new-task">
-        <input class="form-element" type="text">
-        <button class="form-element">+</button>
+        <input placeholder="Nova tarefa?" @keydown.enter="add" v-model="name" class="form-element" type="text">
+        <button @click="add" class="form-element">+</button>
    </div>
 </template>
+
+<script>
+export default {
+    data() {
+		return{
+			name: ''
+		}
+	},
+    methods: {
+		add(event){
+            this.$emit('taskAdded', {name: this.name})
+            this.name = ''
+			//this.tasks.push({name: event, pending: true})
+		}
+	}
+}
+</script>
 
 <style>
 

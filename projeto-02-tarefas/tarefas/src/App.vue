@@ -3,33 +3,47 @@
 		<h1>Tarefas</h1>
 		<TasksProgress />
 
-		<div class="new-task">
-			<input placeholder="Nova tarefa?" v-model="taskvalue" class="form-element" type="text">
-			<button @click="addTask(taskvalue)" class="form-element">+</button>
-   		</div>
-
-		   <TaskGrid :tasks="tasks" />
+		<NewTask @taskAdded="addTask"> </NewTask>
+		   <TaskGrid  
+		   @taskStateChanged="toggleTaskState"
+		   @taskDeleted="deleteTask" 
+		   :tasks="tasks" />
 	</div>
 </template>
 
 <script>
 import TasksProgress from '@/components/TasksProgress'
 import TaskGrid from '@/components/TaskGrid'
+import NewTask from '@/components/NewTask'
 
 export default {
 	data() {
-		return{
-			tasks: [{name: 'Tarefa 1'}, {name: 'Tarefa 2'}],
-			taskvalue: ''
+		return {
+			tasks: []
 		}
 	},
-	components:{
+	components: {
 		TasksProgress,
-		TaskGrid
+		TaskGrid,
+		NewTask
 	},
 	methods: {
-		addTask(){
-			this.tasks.push({name: $event})
+		addTask(task) {
+			const sameName = t => t.name === task.name
+			const reallyNew = this.tasks.filter(sameName).length == 0
+			if(reallyNew && task.name){
+				this.tasks.push({
+					name: task.name, 
+					pending: task.pending || true
+				})
+			}
+			
+		},
+		deleteTask(i) {
+			this.tasks.splice(i, 1)
+		},
+		toggleTaskState(i) {
+			this.tasks[i].pending = !this.tasks[i].pending
 		}
 	}
 }
@@ -56,28 +70,4 @@ export default {
 		font-weight: 300;
 		font-size: 3rem;
 	}
-
-	input.form-element {
-        width: 500px;
-        background: #FFF2;
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-    }
-    
-    .form-element {
-        outline: none;
-        font-size: 2rem;
-        border: 1px solid #FFF;
-        padding: 5px 10px 8px;        
-        color: #FFF
-    }
-    button.form-element {
-        border-left: none;
-        background-color: #2196F3;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-    }
-    .new-task {
-        margin: 35px;
-    }
 </style>
