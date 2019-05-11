@@ -1,22 +1,42 @@
 <template>
     <div class="tasks-progress">
-        <span class="progress-value"></span>
-        <div class="progress=bar"></div>
+        <span class="progress-value"> {{progress}} %</span>
+        <div class="progress-bar" :style="{width: progress + '%'}"></div>
     </div>
 </template>
+<script>
+export default {
+    props: {
+        progress: {type: Number, default: 0},
+    }
+}
+</script>
 
 <style>
     .tasks-progress {
+        position: relative;
         width: 80%;
         border: 1px solid white;
-        height: 30px;
+        color: #FFF;
         border-radius: 10px 10px;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     
     .progress-bar {
-        width: 50%;
+        position: absolute;
         height: 100%;
         border-radius: 10px 10px;
         background-color: green;
+        align-self: flex-start;
+
     }
+
+    .progress-value {
+        z-index: 1;
+        font-size: 1.5rem;
+    }
+
 </style>
