@@ -18,7 +18,7 @@
 			<b-alert variant="info" show v-if="exibir">{{ msg }}</b-alert>
 		</transition> -->
 
-		<hr>
+		<!-- <hr>
 
 		<b-select v-model="tipoAnimacao" class="mb-4">
 			<option value="fade">fade</option>
@@ -52,7 +52,19 @@
 		</div>
 		<transition name="fade" mode="out-in">
 			<component :is="componenteSelecionado"></component>
-		</transition>
+		</transition> -->
+
+		<hr>
+		<b-button @click="adicionarAluno" class="mr-3" variant="success">Add aluno</b-button>
+		
+		<b-list-group>
+			<transition-group tag="div" enter-active-class="animated bounceInDown"
+			leave-active-class="animated zoomOutDown">
+				<b-list-group-item @click="removerAluno(index)" v-for="(aluno, index) in alunos" :key="aluno">
+					{{ aluno }}				
+				</b-list-group-item>
+			</transition-group>
+		</b-list-group>
 	</div>
 </template>
 
@@ -64,6 +76,7 @@ export default {
 	components: { AlertaAdvertencia, AlertaInfo },
 	data() {
 		return {
+			alunos: ['Gabriel', 'Carolina', 'Bruno', 'Renê'],
 			msg: 'Uma mensagem de informação para usuário',
 			exibir: true,
 			exibir2: true,
@@ -73,6 +86,13 @@ export default {
 		}
 	},
 	methods: {
+		adicionarAluno() {
+			const s = Math.random().toString(36).substring(2)
+			this.alunos.push(s)
+		},
+		removerAluno(indice) {
+			this.alunos.splice(indice, 1)
+		},
 		animar(el, done, negativo) {
 			let rodada = 1
 			const temporizador = setInterval( ()=>{
@@ -160,12 +180,18 @@ export default {
 }
 
 .slide-leave-active {
+	position: absolute;
+	width: 100%;
 	animation: slide-out 2s ease;
 	transition: opacity 2s;
 }
 
 .slide-enter, .slide-leave-to {
 	opacity: 0;
+}
+
+.slide-move {
+	transition: transform 1s;
 }
 
 </style>
