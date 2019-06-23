@@ -20,7 +20,11 @@
 		<b-list-group v-if="usuarios">
 			<b-list-group-item v-for="(usuario, id) in usuarios" :key="usuario.id">
 				<strong>Nome:</strong> {{usuario.nome}}: <br>	
-				<strong>ID:</strong> {{id}} <br>	
+				<strong>ID:</strong> {{id}} <br>
+				<b-button variant="warning" size="lg"
+					@click="carregar(id)">Carregar</b-button>
+				<b-button variant="danger" class="ml-2" size="lg"
+				@click="excluir(id)">Excluir</b-button>	
 			</b-list-group-item>
 		</b-list-group>
 	</div>
@@ -30,6 +34,7 @@
 export default {
 	data() {
 		return{
+			id: null,
 			usuario: {
 				nome:'',
 				email:''
@@ -38,13 +43,18 @@ export default {
 		}
 	},
 	methods: {
+		limpar(){
+			this.usuario.nome = ''
+			this.usuario.email = ''
+			this.id = null
+		},
 		salvar() {
-			this.$http.post('usuarios.json', this.usuario)
-			.then(resp => {
-				this.usuario = {}
-				this.obterUsuarios()
-				
-			})
+			const metodo = this.id ? 'patch' : 'post'
+			const finalUrl = this.id ? `/${this.id}.json` : '.json'
+			this.$http[metodo](`/usuarios${finalUrl}`, this.usuario)
+				.then(() => this.limpar())
+			// this.$http.post('usuarios.json', this.usuario)
+			// .then(() =>  this.limpar())
 		},
 		obterUsuarios() {
 			this.$http.get('usuarios.json').then(res =>  {				
@@ -53,8 +63,14 @@ export default {
 				console.log(this.usuarios)
 			})
 		},
-		removerusuario(index) {
-			this.usuarios.splice(index, 1)
+		carregar(id) {
+			this.id = id
+			this.usuario = { ...this.usuarios[id]}
+		},
+		excluir(id) {
+			this.$http.delete(`/usuarios/${id}.json`)
+				.then(() => this.limpar() )
+			//this.usuarios.splice(index, 1)
 		}
 	},
 	created() {		
