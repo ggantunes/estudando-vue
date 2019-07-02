@@ -4,34 +4,36 @@
 		<hr>
 		<!-- Exercício -->
 		<!-- Escreva uma diretiva que funcione com o v-on (escute eventos) -->
-		<button v-gabs:click="alerta">click</button>
-		<p v-gabs:mouseenter="menter"
-		   v-gabs:mouseleave="mleave">passe o mouse aqui</p>
+		<button v-quando:click="acao">Executar</button>
+		<p v-quando:mouseenter="mouseEnter"
+		   v-quando:mouseleave="mouseLeave">Moudse</p>
 	</div>
 </template>
 
 <script>
 export default {
 	directives: {
-		gabs:{
-			bind(el, binding){
-				const ev = binding.arg;
-				const func = binding.value
-				el.addEventListener(ev, func)
-				
-
-				//binding.value.alerta
+		'quando':{
+			bind(el, binding){	
+				// el.onclick = function(e) {
+				// 	binding.value()
+				// }
+				console.log(binding.arg)
+				const tipo = binding.arg
+				const fn = binding.value
+				el.addEventListener(tipo, fn)
 			}
 		}
-	}, methods: {
-		alerta(){
-			alert('td ok')
+	},
+	methods: {
+		acao(){
+			alert('Ação executada')
 		},
-		menter(){
-			console.log('over')
+		mouseEnter() {
+			console.log('Mouse enter!')
 		},
-		mleave(){
-			console.log('OUT')
+		mouseLeave() {
+			console.log('Mouse leave!')
 		}
 	}
 }
