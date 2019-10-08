@@ -16,6 +16,8 @@ export default new Vuex.Store({
     mutations: {
         adicionarProduto (state, payload) {
             state.produtos.push(payload)
+
+            //roberta
         }
     }
 })
